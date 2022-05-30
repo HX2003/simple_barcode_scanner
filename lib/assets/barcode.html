@@ -5,56 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-         /* In order to place the tracking correctly */
-         canvas.drawing, canvas.drawingBuffer {
-         position: absolute;
-         left: 0;
-         top: 0;
-         }
-         html, body {
-         height: 100%; /* IMPORTANT!!! Stretches viewport to 100% */
-         }
-      </style>
-    <script src="html5-qrcode.min.js"></script>
+    </style>
+    <script src="quagga.min.js"></script>
 </head>
 <body>
 <!-- Div to show the scanner -->
-<div id="reader" ></div>
+<div id="liveStream" ></div>
 <script>
-         const html5QrCode = new Html5Qrcode("reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_39] } );
-         console.log("Starting SCANNGING CODE");
-         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-             /* html5QrCode.stop(); */
-             /* handle success for web */
-             window.parent.postMessage(decodedText, "*");
+    Quagga.init({
+    inputStream: {
+        name: "Live",
+        type: 'LiveStream',
+        target: document.getElementById('liveStream')
+    },
+    decoder: {
+        readers: ["code_39_reader"],
+    }
+}, function (err) {
+    if (err) {
+        console.log(err)
+        return
+    }
+    console.log('Initalization finished. Ready to start')
+    Quagga.start()
+})
+
+Quagga.onDetected(data => {
+    if (data) {
+        if (data.codeResult) {
+            Quagga.stop()
+              /* handle success for web */
+             window.parent.postMessage(data.codeResult, "*");
 
              /* handle success for window */
              if(window.chrome.webview!="undefined"){
              var param = {
              "methodName":"successCallback",
-             "data":decodedText
+             "data": data.codeResult
              }
                 window.chrome.webview.postMessage(param);
              }
-
-         };
-    
-        let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
-            let minEdgePercentage = 0.7; // 70%
-            let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-            let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
-            return {
-                width: qrboxSize,
-                height: qrboxSize
-            };
         }
-         const config = { fps: 30, qrbox: qrboxFunction };
-
-         // If you want to prefer back camera
-         html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
-         //html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
-
-
+    }
       </script>
 </body>
 </html>
