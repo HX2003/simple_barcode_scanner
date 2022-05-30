@@ -39,9 +39,10 @@ Quagga.onDetected(data => {
 
              /* handle success for window */
              if(window.chrome.webview!="undefined"){
-             var param = {
-             "methodName":"successCallback",
-             "data": data.codeResult
+                 var param = {
+                 "methodName":"successCallback",
+                 "data": data.codeResult
+                 }
              }
                 window.chrome.webview.postMessage(param);
              }
