@@ -5,12 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+    #scanner {
+         position: relative;
+    }
+    canvas.drawing, canvas.drawingBuffer {
+         position: absolute;
+         left: 0;
+         top: 0;
+    }
     </style>
     <script src="quagga.min.js"></script>
 </head>
 <body>
-<!-- Div to show the scanner -->
-<div id="liveStream" ></div>
+<div id="scanner"> 
+    <div id="liveStream" ></div> 
+</div>
 <script>
     Quagga.init({
         inputStream: {
