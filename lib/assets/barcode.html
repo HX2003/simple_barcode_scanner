@@ -15,6 +15,7 @@
         align-items: center;
         justify-content: center;
         margin: 0px;
+        background-color: #303030;
     }
         
     #liveStream {
@@ -55,6 +56,13 @@
         }
         console.log('Initalization finished. Ready to start')
         Quagga.start()
+        
+		var video = document.getElementById("liveStream");
+		var boundingRect = video.getBoundingClientRect();
+            
+        let scaleAmt = window.innerWidth / boundingRect.width;
+        
+		video.style.transform = `scale(${scaleAmt})`;
     })
 
 Quagga.onDetected(data => {
