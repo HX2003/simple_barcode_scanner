@@ -21,7 +21,7 @@
 <!-- Div to show the scanner -->
 <div id="reader" ></div>
 <script>
-         const html5QrCode = new Html5Qrcode("reader");
+         const html5QrCode = new Html5Qrcode("reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_39] } );
          console.log("Starting SCANNGING CODE");
          const qrCodeSuccessCallback = (decodedText, decodedResult) => {
              /* html5QrCode.stop(); */
@@ -48,7 +48,7 @@
                 height: qrboxSize
             };
         }
-         const config = { fps: 10, qrbox:  { width: 280, height: 120, qrbox: qrboxFunction, formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_39] } };
+         const config = { fps: 10, qrbox:  {qrbox: qrboxFunction } };
 
          // If you want to prefer back camera
          html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
