@@ -38,7 +38,17 @@
              }
 
          };
-         const config = { fps: 10, qrbox:  { width: 280, height: 120, aspectRatio: 1.7777778 } };
+    
+        let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
+            let minEdgePercentage = 0.7; // 70%
+            let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+            let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+            return {
+                width: qrboxSize,
+                height: qrboxSize
+            };
+        }
+         const config = { fps: 10, qrbox:  { width: 280, height: 120, qrbox: qrboxFunction, formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_39] } };
 
          // If you want to prefer back camera
          html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
