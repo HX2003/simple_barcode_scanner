@@ -13,41 +13,41 @@
 <div id="liveStream" ></div>
 <script>
     Quagga.init({
-    inputStream: {
-        name: "Live",
-        type: 'LiveStream',
-        target: document.getElementById('liveStream')
-    },
-    decoder: {
-        readers: ["code_39_reader"],
-    }
-}, function (err) {
-    if (err) {
-        console.log(err)
-        return
-    }
-    console.log('Initalization finished. Ready to start')
-    Quagga.start()
-})
+        inputStream: {
+            name: "Live",
+            type: 'LiveStream',
+            target: document.getElementById('liveStream')
+        },
+        decoder: {
+            readers: ["code_39_reader"],
+        }
+    }, function(err) {
+        if (err) {
+            console.log(err)
+            return
+        }
+        console.log('Initalization finished. Ready to start')
+        Quagga.start()
+    })
 
 Quagga.onDetected(data => {
-    if (data) {
-        if (data.codeResult) {
-            Quagga.stop()
-              /* handle success for web */
-             window.parent.postMessage(data.codeResult, "*");
+            if (data) {
+                if (data.codeResult) {
+                    Quagga.stop()
+                    /* handle success for web */
+                    window.parent.postMessage(data.codeResult, "*");
 
-             /* handle success for window */
-             if(window.chrome.webview!="undefined"){
-                 var param = {
-                 "methodName":"successCallback",
-                 "data": data.codeResult
-                 }
-             }
-                window.chrome.webview.postMessage(param);
-             }
-        }
-    }
+                    /* handle success for window */
+                    if (window.chrome.webview != "undefined") {
+                        var param = {
+                            "methodName": "successCallback",
+                            "data": data.codeResult
+                        }
+                        window.chrome.webview.postMessage(param);
+                    }
+                }
+            }
+        })
       </script>
 </body>
 </html>
