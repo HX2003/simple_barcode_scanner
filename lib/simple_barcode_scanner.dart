@@ -34,10 +34,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       lineColor: lineColor,
       cancelButtonText: cancelButtonText,
       isShowFlashIcon: isShowFlashIcon,
-      scanType: scanType,
-      onScanned: (res) {
-        Navigator.pop(context, res);
-      },
+      scanType: scanType
     );
   }
 }
