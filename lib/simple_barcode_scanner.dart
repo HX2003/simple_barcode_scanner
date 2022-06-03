@@ -34,7 +34,8 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       lineColor: lineColor,
       cancelButtonText: cancelButtonText,
       isShowFlashIcon: isShowFlashIcon,
-      scanType: scanType
+      scanType: scanType,
+      onScanned: (res) {},
     );
   }
 }
