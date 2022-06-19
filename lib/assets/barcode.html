@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
     html, body {
         height: 100%;
         width: 100%;
@@ -13,76 +12,27 @@
     body {
         display: flex;
         align-items: center;
-        justify-content: center;
         margin: 0px;
         background-color: #303030;
     }
         
-    #liveStream {
-        position: relative;
-        width: fit-content;
+    #container {
+        width: 100%;
+		position: relative;
+		overflow: hidden;
     }
         
-    canvas.drawing, canvas.drawingBuffer {
+    #canvas {
         position: absolute;
-        left: 0;
-        top: 0;
+		transform-origin: left top;
     }
     </style>
-    <script src="quagga.min.js"></script>
 </head>
+
 <body>
-<div id="liveStream" ></div> 
-<script>
-    Quagga.init({
-        inputStream: {
-            name: "Live",
-            type: 'LiveStream',
-            constraints: {
-                width: {min: 1280},
-                height: {min: 720},
-                facingMode: "environment",
-                aspectRatio: {min: 1, max: 2}
-            },
-            target: document.getElementById('liveStream')
-        },
-        decoder: {
-            readers: ["code_39_reader"],
-        }
-    }, function(err) {
-        if (err) {
-            console.log(err)
-            return
-        }
-        console.log('Initalization finished. Ready to start')
-        Quagga.start()
-        
-		var video = document.getElementById("liveStream");
-		var boundingRect = video.getBoundingClientRect();
-            
-        let scaleAmt = window.innerWidth / boundingRect.width;
-        
-		video.style.transform = `scale(${scaleAmt})`;
-    })
-
-Quagga.onDetected(data => {
-            if (data) {
-                if (data.codeResult) {
-                    Quagga.stop()
-                    /* handle success for web */
-                    window.parent.postMessage(data.codeResult.code, "*");
-
-                    /* handle success for window */
-                    if (window.chrome.webview != undefined) {
-                        var param = {
-                            "methodName": "successCallback",
-                            "data": data.codeResult.code
-                        }
-                        window.chrome.webview.postMessage(param);
-                    }
-                }
-            }
-        })
-      </script>
+  <div id="container">
+    <canvas id="canvas"></canvas>
+  </div>
 </body>
+<script src="main.js"></script>
 </html>
